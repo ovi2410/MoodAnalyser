@@ -4,26 +4,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MoodAnalyserProb
+namespace UC2_exceptionhandling
 {
-    public class MoodAnalyser
-    {
-        string message;
-        public MoodAnalyser(string message)
-        {
-            this.message = message;
-        }
+     public class MoodAnalyser
+     {
+           string message;
+           public MoodAnalyser(string message)
+           {
+                this.message = message;
+           }
 
-        public string AnalyzeMood()
-        {
-            if (message.ToLower().Contains("happy"))
+            public string AnalyzeMood()
             {
-                return "happy";
+                try
+                {
+
+                    if (message.ToLower().Contains("happy"))
+                    {
+                        return "happy";
+                    }
+                    else
+                    {
+                        return "sad";
+                    }
+                }
+                catch (NullReferenceException)
+                {
+                    return "happy";
+
+                }
             }
-            else
-            {
-                return "sad";
-            }
-        }
     }
+    
 }
