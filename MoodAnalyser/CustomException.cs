@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UC4_usingReflection
+namespace UC5_parametrizedconstructor
 {
     public class CustomException : Exception
     {
