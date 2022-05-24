@@ -1,179 +1,196 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MoodAnalyser;
-namespace TestProject5
+
+namespace TestProject6
 {
     [TestClass]
     public class UnitTest1
     {
-
-      //  MoodAnalyser happyMood;
+        //  MoodAnalyser happyMood;
 
         [TestInitialize]
-            public void SetUp()
+        public void SetUp()
+        {
+            //moodAnalyser = new MoodAnalyser(message);
+        }
+        /// <summary>
+        /// UC2-Handling exceptions
+        /// </summary>
+        [TestMethod]
+        public void TestMethodForHappyMood()
+
+        {
+            string expected = "happy";
+            MoodAnalyser moodAnalyser = new MoodAnalyser("I am in happy Mood");
+            string actual = moodAnalyser.AnalyzeMood();
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void TestMethodForSadMood()
+
+        {
+            string expected = "sad";
+            MoodAnalyser moodAnalyser = new MoodAnalyser("I am in sad Mood");
+            string actual = moodAnalyser.AnalyzeMood();
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void TestMethodForNullMood()
+
+        {
+            string expected = "happy";
+            MoodAnalyser moodAnalyser = new MoodAnalyser("I am in happy Mood");
+            string actual = moodAnalyser.AnalyzeMood();
+            Assert.AreEqual(expected, actual);
+        }
+        /// <summary>
+        /// UC3-Customized Exception
+        /// </summary>
+        [TestMethod]
+        public void TestMethodForCustomizedNullException()
+
+        {
+            string expected = "Mood should not be null";
+            try
             {
-                //moodAnalyser = new MoodAnalyser(message);
-            }
-            /// <summary>
-            /// UC2-Handling exceptions
-            /// </summary>
-            [TestMethod]
-            public void TestMethodForHappyMood()
 
+                MoodAnalyser moodAnalyser = new MoodAnalyser(null);
+                moodAnalyser.AnalyzeMood();
+            }
+            catch (CustomException ex)
             {
-                string expected = "happy";
-                MoodAnalyser moodAnalyser = new MoodAnalyser("I am in happy Mood");
-                string actual = moodAnalyser.AnalyzeMood();
-                Assert.AreEqual(expected, actual);
+                Assert.AreEqual(expected, ex.Message);
             }
+        }
+        [TestMethod]
+        public void TestMethodForCustomizedEmptyException()
 
-            [TestMethod]
-            public void TestMethodForSadMood()
-
+        {
+            string expected = "Mood should not be empty";
+            try
             {
-                string expected = "sad";
-                MoodAnalyser moodAnalyser = new MoodAnalyser("I am in sad Mood");
-                string actual = moodAnalyser.AnalyzeMood();
-                Assert.AreEqual(expected, actual);
-            }
-            [TestMethod]
-            public void TestMethodForNullMood()
 
+                MoodAnalyser moodAnalyser = new MoodAnalyser(string.Empty);
+                moodAnalyser.AnalyzeMood();
+            }
+            catch (CustomException ex)
             {
-                string expected = "happy";
-                MoodAnalyser moodAnalyser = new MoodAnalyser("I am in happy Mood");
-                string actual = moodAnalyser.AnalyzeMood();
-                Assert.AreEqual(expected, actual);
+                Assert.AreEqual(expected, ex.Message);
             }
-            /// <summary>
-            /// UC3-Customized Exception
-            /// </summary>
-            [TestMethod]
-            public void TestMethodForCustomizedNullException()
-
+        }
+        /// <summary>
+        /// Using Reflection-UC4-Default Constructor
+        /// </summary>
+        [TestMethod]
+        public void Reflection_Return_Default_Constructor()
+        {
+            MoodAnalyser expected = new MoodAnalyser();
+            object obj = null;
+            try
             {
-                string expected = "Mood should not be null";
-                try
-                {
+                MoodAnalyserFactory factory = new MoodAnalyserFactory();
+                obj = factory.CreateMoodAnalyserObject("MoodAnalyserProblem2.MoodAnalyser", "MoodAnalyser");
 
-                    MoodAnalyser moodAnalyser = new MoodAnalyser(null);
-                    moodAnalyser.AnalyzeMood();
-                }
-                catch (CustomException ex)
-                {
-                    Assert.AreEqual(expected, ex.Message);
-                }
             }
-            [TestMethod]
-            public void TestMethodForCustomizedEmptyException()
-
+            catch (CustomException ex)
             {
-                string expected = "Mood should not be empty";
-                try
-                {
-
-                    MoodAnalyser moodAnalyser = new MoodAnalyser(string.Empty);
-                    moodAnalyser.AnalyzeMood();
-                }
-                catch (CustomException ex)
-                {
-                    Assert.AreEqual(expected, ex.Message);
-                }
+                throw new System.Exception(ex.Message);
             }
-            /// <summary>
-            /// Using Reflection-UC4-Default Constructor
-            /// </summary>
-            [TestMethod]
-            public void Reflection_Return_Default_Constructor()
+        }
+        //Neagtive Case
+        [TestMethod]
+        public void Reflection_Return_Default_Constructor_No_Class_Found()
+        {
+            string expected = "Class not found";
+            object obj = null;
+            try
             {
-                MoodAnalyser expected = new MoodAnalyser();
-                object obj = null;
-                try
-                {
-                    MoodAnalyserFactory factory = new MoodAnalyserFactory();
-                    obj = factory.CreateMoodAnalyserObject("MoodAnalyserProblem2.MoodAnalyser", "MoodAnalyser");
+                MoodAnalyserFactory factory = new MoodAnalyserFactory();
+                obj = factory.CreateMoodAnalyserObject("MoodAnalyserProblem2.MoodAnaly", "MoodAnaly");
 
-                }
-                catch (CustomException ex)
-                {
-                    throw new System.Exception(ex.Message);
-                }
             }
-            //Neagtive Case
-            [TestMethod]
-            public void Reflection_Return_Default_Constructor_No_Class_Found()
+            catch (CustomException actual)
             {
-                string expected = "Class not found";
-                object obj = null;
-                try
-                {
-                    MoodAnalyserFactory factory = new MoodAnalyserFactory();
-                    obj = factory.CreateMoodAnalyserObject("MoodAnalyserProblem2.MoodAnaly", "MoodAnaly");
-
-                }
-                catch (CustomException actual)
-
-                {
-                    Assert.AreEqual(expected, actual.Message);
-                }
+                Assert.AreEqual(expected, actual.Message);
             }
-            //Neagtive Case
-            [TestMethod]
-            public void Reflection_Return_Default_Constructor_No_Constructor_Found()
+        }
+        //Neagtive Case
+        [TestMethod]
+        public void Reflection_Return_Default_Constructor_No_Constructor_Found()
+        {
+            string expected = "Constructor not found";
+            object obj = null;
+            try
             {
-                string expected = "Constructor not found";
-                object obj = null;
-                try
-                {
-                    MoodAnalyserFactory factory = new MoodAnalyserFactory();
-                    obj = factory.CreateMoodAnalyserObject("MoodAnalyserProblem2.MoodAnalyser", "MoodAnaly");
+                MoodAnalyserFactory factory = new MoodAnalyserFactory();
+                obj = factory.CreateMoodAnalyserObject("MoodAnalyserProblem2.MoodAnalyser", "MoodAnaly");
 
-                }
-                catch (CustomException actual)
-                {
-                    Assert.AreEqual(expected, actual.Message);
-                }
             }
-
-            /// <summary>
-            /// Using Reflection-UC5-Parameterized Constructor
-            /// </summary>
-            [TestMethod]
-            public void Reflection_Return_Parameterized_Constructor()
+            catch (CustomException actual)
             {
-                string message = "I am in happy mood";
-                MoodAnalyser expected = new MoodAnalyser(message);
-                object actual = null;
-                try
-                {
-                    MoodAnalyserFactory factory = new MoodAnalyserFactory();
-                    actual = factory.CreateMoodAnalyserParameterizedObject("MoodAnalyserProblem2.MoodAnalyser", "MoodAnalyser", message);
-
-                }
-                catch (CustomException ex)
-                {
-                    throw new System.Exception(ex.Message);
-                }
-                actual.Equals(expected);
+                Assert.AreEqual(expected, actual.Message);
             }
-            //Invalid case
-            [TestMethod]
-            public void Reflection_Return_Parameterized_Class_Invalid()
+        }
+
+        /// <summary>
+        /// Using Reflection-UC5-Parameterized Constructor
+        /// </summary>
+        [TestMethod]
+        public void Reflection_Return_Parameterized_Constructor()
+        {
+            string message = "I am in happy mood";
+            MoodAnalyser expected = new MoodAnalyser(message);
+            object actual = null;
+            try
             {
-                string message = "I am in happy mood";
-                MoodAnalyser expected = new MoodAnalyser(message);
-                object actual = null;
-                try
-                {
-                    MoodAnalyserFactory factory = new MoodAnalyserFactory();
-                    actual = factory.CreateMoodAnalyserParameterizedObject("MoodAnalyserProblem2.MoodAna", "MoodAnalyser", message);
+                MoodAnalyserFactory factory = new MoodAnalyserFactory();
+                actual = factory.CreateMoodAnalyserParameterizedObject("MoodAnalyserProblem2.MoodAnalyser", "MoodAnalyser", message);
 
-                }
-                catch (CustomException actual1)
-                {
-                    Assert.AreEqual(expected, actual1.Message);
-                }
             }
+            catch (CustomException ex)
+            {
+                throw new System.Exception(ex.Message);
+            }
+            actual.Equals(expected);
+        }
+        //Invalid case
+        [TestMethod]
+        public void Reflection_Return_Parameterized_Class_Invalid()
+        {
+            string message = "I am in happy mood";
+            MoodAnalyser expected = new MoodAnalyser(message);
+            object actual = null;
+            try
+            {
+                MoodAnalyserFactory factory = new MoodAnalyserFactory();
+                actual = factory.CreateMoodAnalyserParameterizedObject("MoodAnalyserProblem2.MoodAna", "MoodAnalyser", message);
 
-        
+            }
+            catch (CustomException actual1)
+            {
+                Assert.AreEqual(expected, actual1.Message);
+            }
+        }
+        /// <summary>
+        /// UC6-Using Reflection-Invoke Method
+        /// </summary>
+        [TestMethod]
+        public void Reflection_Return_Method()
+        {
+            string expected = "happy";
+            MoodAnalyserFactory factory = new MoodAnalyserFactory();
+            string actual = factory.InvokeAnalyserMethod("happy", "AnalyzeMood");
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void Reflection_Return_Invalid_Method()
+        {
+            string expected = "happy";
+            MoodAnalyserFactory factory = new MoodAnalyserFactory();
+            string actual = factory.InvokeAnalyserMethod("happy", "Analyze");
+
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
