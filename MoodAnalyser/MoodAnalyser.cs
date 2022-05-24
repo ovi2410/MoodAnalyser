@@ -4,36 +4,39 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UC2_exceptionhandling
+namespace UC3_customException
 {
-     public class MoodAnalyser
-     {
-           string message;
-           public MoodAnalyser(string message)
-           {
-                this.message = message;
-           }
+    public class MoodAnalyser
+    {
+        string message;
+        public MoodAnalyser(string message)
+        {
+            this.message = message;
+        }
 
-            public string AnalyzeMood()
+        public string AnalyzeMood()
+        {
+            try
             {
-                try
+                if (message.Equals(string.Empty))
                 {
-
-                    if (message.ToLower().Contains("happy"))
-                    {
-                        return "happy";
-                    }
-                    else
-                    {
-                        return "sad";
-                    }
+                    throw new CustomException(CustomException.ExceptionType.EMPTY_EXCEPTION, "Mood should not be empty");
                 }
-                catch (NullReferenceException)
+
+                else if (message.ToLower().Contains("happy"))
                 {
                     return "happy";
-
+                }
+                else
+                {
+                    return "sad";
                 }
             }
+            catch (NullReferenceException)
+            {
+                return "happy";
+
+            }
+        }
     }
-    
 }
