@@ -4,11 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MoodAnalyserProb
+namespace UC5_parametrizedconstructor
 {
     public class MoodAnalyser
     {
         string message;
+
+        public MoodAnalyser()
+        {
+        }
+
         public MoodAnalyser(string message)
         {
             this.message = message;
@@ -16,13 +21,26 @@ namespace MoodAnalyserProb
 
         public string AnalyzeMood()
         {
-            if (message.ToLower().Contains("happy"))
+            try
             {
-                return "happy";
+                if (message.Equals(string.Empty))
+                {
+                    throw new CustomException(CustomException.ExceptionType.EMPTY_EXCEPTION, "Mood should not be empty");
+                }
+
+                else if (message.ToLower().Contains("happy"))
+                {
+                    return "happy";
+                }
+                else
+                {
+                    return "sad";
+                }
             }
-            else
+            catch (NullReferenceException)
             {
-                return "sad";
+                throw new CustomException(CustomException.ExceptionType.NULL_EXCEPTION, "Mood should not be null");
+
             }
         }
     }
