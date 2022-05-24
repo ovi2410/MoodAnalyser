@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MoodAnalyserProb
+namespace UC4_usingReflection
 {
     public class MoodAnalyser
     {
@@ -16,13 +16,26 @@ namespace MoodAnalyserProb
 
         public string AnalyzeMood()
         {
-            if (message.ToLower().Contains("happy"))
+            try
+            {
+                if (message.Equals(string.Empty))
+                {
+                    throw new CustomException(CustomException.ExceptionType.EMPTY_EXCEPTION, "Mood should not be empty");
+                }
+
+                else if (message.ToLower().Contains("happy"))
+                {
+                    return "happy";
+                }
+                else
+                {
+                    return "sad";
+                }
+            }
+            catch (NullReferenceException)
             {
                 return "happy";
-            }
-            else
-            {
-                return "sad";
+
             }
         }
     }
